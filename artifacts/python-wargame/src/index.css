@@ -99,8 +99,8 @@
 .wg-shell {
   min-height: 100dvh;
   background-color: hsl(var(--background));
-  background-image: linear-gradient(90deg, transparent 0, transparent calc(100% - 1px), hsl(var(--foreground) / .018) calc(100% - 1px));
-  background-size: 36px 36px;
+  background-image: radial-gradient(circle at 14% 0%, hsl(var(--accent) / .09), transparent 28rem), linear-gradient(90deg, transparent 0, transparent calc(100% - 1px), hsl(var(--foreground) / .018) calc(100% - 1px));
+  background-size: auto, 36px 36px;
 }
 .wg-topbar {
   min-height: 74px;
@@ -110,7 +110,8 @@
   gap: 20px;
   padding: 0 clamp(18px, 4vw, 66px);
   border-bottom: 1px solid hsl(var(--border));
-  background: hsl(var(--background) / .96);
+  background: hsl(var(--background) / .92);
+  box-shadow: 0 1px 0 hsl(var(--foreground) / .02), 0 12px 30px hsl(var(--foreground) / .025);
   position: sticky;
   top: 0;
   z-index: 5;
@@ -120,6 +121,7 @@
   display: grid; place-items: center; width: 37px; height: 37px; flex: 0 0 37px;
   border: 1px solid hsl(var(--primary) / .5); border-radius: 3px;
   background: hsl(var(--primary)); color: hsl(var(--primary-foreground));
+  box-shadow: 3px 3px 0 hsl(var(--accent) / .35);
   font: 500 15px var(--app-font-mono); letter-spacing: -.12em;
 }
 .wg-brand-name { font: 600 17px var(--app-font-display); letter-spacing: -.045em; white-space: nowrap; }
@@ -145,7 +147,7 @@
   display: flex; align-items: center; gap: 8px; color: hsl(var(--primary));
   font: 500 10px var(--app-font-mono); letter-spacing: .1em; text-transform: uppercase;
 }
-.wg-heading { margin: 12px 0 8px; font: 600 clamp(32px, 4vw, 49px)/1.04 var(--app-font-display); letter-spacing: -.06em; }
+.wg-heading { margin: 12px 0 8px; font: 600 clamp(32px, 4vw, 49px)/1.04 var(--app-font-display); letter-spacing: -.06em; max-width: 11ch; }
 .wg-intro-copy { color: hsl(var(--muted-foreground)); max-width: 570px; line-height: 1.65; margin: 0; font-size: 14px; }
 .wg-progress {
   min-width: 205px; max-width: 250px; width: 23%;
@@ -156,7 +158,7 @@
 .wg-progress-total { color: hsl(var(--muted-foreground)); font-weight: 400; }
 .wg-progress-caption { color: hsl(var(--muted-foreground)); font-size: 11px; }
 .wg-progress-track { height: 4px; overflow: hidden; margin-top: 12px; background: hsl(var(--border)); }
-.wg-progress-fill { height: 100%; background: hsl(var(--primary)); transition: width .35s; }
+.wg-progress-fill { height: 100%; background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent))); transition: width .35s; }
 .wg-layout { display: grid; grid-template-columns: 264px minmax(0, 1fr); gap: clamp(22px, 3vw, 42px); align-items: start; }
 .wg-rail {
   position: sticky; top: 94px; overflow: hidden;
@@ -177,6 +179,7 @@
 }
 .wg-level-link:hover:not(:disabled) { background: hsl(var(--muted) / .55); }
 .wg-level-link[aria-current="step"] { border-left-color: hsl(var(--primary)); background: hsl(var(--primary) / .085); }
+.wg-level-link[aria-current="step"] .wg-level-name { color: hsl(var(--primary)); }
 .wg-level-link:disabled { cursor: not-allowed; opacity: .46; }
 .wg-level-index {
   flex: 0 0 27px; display: grid; place-items: center; width: 27px; height: 27px;
@@ -197,7 +200,10 @@
 .wg-planned span { display: block; font-size: 10px; line-height: 1.5; }
 .wg-workspace { min-width: 0; }
 .wg-lesson-head {
-  padding: 3px 0 21px; border-bottom: 1px solid hsl(var(--border));
+  position: relative; padding: 3px 0 21px 17px; border-bottom: 1px solid hsl(var(--border));
+}
+.wg-lesson-head::before {
+  content: ""; position: absolute; inset: 0 auto 21px 0; width: 3px; background: hsl(var(--accent));
 }
 .wg-lesson-top { display: flex; justify-content: space-between; align-items: start; gap: 18px; }
 .wg-lesson-number { color: hsl(var(--primary)); font: 500 10px var(--app-font-mono); text-transform: uppercase; letter-spacing: .09em; }
@@ -210,14 +216,15 @@
   background: transparent; color: hsl(var(--muted-foreground)); font: 400 9px var(--app-font-mono);
 }
 .wg-content-grid { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(320px, .98fr); gap: 18px; margin-top: 19px; align-items: start; }
-.wg-card { min-width: 0; border: 1px solid hsl(var(--border)); border-radius: 3px; background: hsl(var(--card)); box-shadow: var(--shadow-xs); overflow: hidden; }
+.wg-card { min-width: 0; border: 1px solid hsl(var(--border)); border-radius: 5px; background: hsl(var(--card)); box-shadow: var(--shadow-xs); overflow: hidden; }
+.wg-card:hover { box-shadow: var(--shadow-sm); }
 .wg-card-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 13px 16px; border-bottom: 1px solid hsl(var(--border)); }
 .wg-card-title { margin: 0; font: 600 13px var(--app-font-display); letter-spacing: -.02em; }
 .wg-card-sub { color: hsl(var(--muted-foreground)); font: 10px var(--app-font-mono); }
 .wg-theory { padding: 4px 17px 17px; }
 .wg-theory h3 { margin: 17px 0 7px; font: 600 14px var(--app-font-display); }
 .wg-theory p { margin: 10px 0; color: hsl(var(--foreground) / .86); font-size: 12px; line-height: 1.75; }
-.wg-tip { padding: 10px 13px; margin: 12px 0; border-left: 2px solid hsl(var(--accent)); background: hsl(var(--accent) / .075); font-size: 11px; line-height: 1.65; }
+.wg-tip { padding: 11px 14px; margin: 14px 0; border-left: 3px solid hsl(var(--accent)); background: hsl(var(--accent) / .075); font-size: 11px; line-height: 1.65; }
 .wg-code-sample, .wg-editor { background: #24312f; color: #e8ede4; font-family: var(--app-font-mono); tab-size: 4; }
 .wg-code-sample { margin: 11px 0; padding: 14px; border-radius: 2px; white-space: pre-wrap; overflow-x: auto; font-size: 11px; line-height: 1.7; }
 .wg-exercise { padding: 15px 17px; background: hsl(42 30% 93%); border-top: 1px solid hsl(var(--border)); }
@@ -284,7 +291,7 @@
 .wg-result-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 9px; background: hsl(var(--muted) / .55); font-size: 10px; }
 .wg-pass { color: hsl(var(--primary)); font-weight: 600; }
 .wg-fail { color: hsl(var(--destructive)); font-weight: 600; }
-.wg-hints { margin-top: 19px; padding: 15px 17px; border: 1px solid hsl(var(--border)); background: hsl(var(--card)); }
+.wg-hints { margin-top: 19px; padding: 15px 17px; border: 1px solid hsl(var(--border)); border-top: 3px solid hsl(var(--accent) / .7); background: hsl(var(--card)); }
 .wg-hints-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .wg-hints-title { margin: 0; font: 600 13px var(--app-font-display); }
 .wg-hints-copy { margin: 5px 0 0; color: hsl(var(--muted-foreground)); font-size: 10px; line-height: 1.55; }
@@ -332,7 +339,7 @@
   .wg-top-actions .wg-button svg { width: 16px; height: 16px; }
   .wg-main { padding: 23px 13px 40px; }
   .wg-intro { display: block; margin-bottom: 16px; padding-bottom: 17px; }
-  .wg-heading { font-size: clamp(30px, 9vw, 39px); }
+  .wg-heading { font-size: clamp(30px, 9vw, 39px); max-width: none; }
   .wg-progress { margin-top: 17px; width: 100%; max-width: none; padding: 0; border: 0; }
   .wg-layout { display: flex; flex-direction: column; gap: 20px; }
   .wg-rail { position: static; width: 100%; border: 1px solid hsl(var(--border)); background: hsl(var(--card)); }
@@ -342,11 +349,13 @@
   .wg-phase-heading, .wg-planned { display: none; }
   .wg-level-link { flex: 0 0 164px; scroll-snap-align: start; min-height: 49px; }
   .wg-workspace { width: 100%; }
-  .wg-lesson-head { padding: 1px 0 16px; }
+  .wg-lesson-head { padding: 1px 0 16px 13px; }
+  .wg-lesson-head::before { bottom: 16px; }
   .wg-lesson-top { display: block; }
   .wg-lesson-head > .wg-pill { margin-top: 11px; }
   .wg-editor-surface { height: 260px; min-height: 235px; }
-  .wg-editor-highlight, .wg-editor { padding: 13px; font-size: 10px; }
+  .wg-editor-highlight, .wg-editor { padding: 13px 13px 13px 48px; font-size: 10px; }
+  .wg-line-numbers { width: 34px; padding: 13px 7px 13px 0; font-size: 10px; }
   .wg-editor-toolbar { align-items: flex-start; }
   .wg-editor-actions { justify-content: flex-end; }
   .wg-overview-phases { grid-template-columns: 1fr; }
