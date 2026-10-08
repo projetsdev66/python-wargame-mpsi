@@ -47,6 +47,21 @@ function formatValue(value: JsonValue) {
   return JSON.stringify(value) ?? String(value);
 }
 
+function translatePythonError(error?: string) {
+  if (!error) return "";
+  const line = error.match(/line (\d+)/i)?.[1];
+  const suffix = line ? ` (ligne ${line})` : "";
+  if (/SyntaxError/i.test(error)) return `La syntaxe Python est incorrecte${suffix}. Vérifie les deux-points, les parenthèses et les guillemets.`;
+  if (/IndentationError/i.test(error)) return `L’indentation n’est pas cohérente${suffix}. Utilise quatre espaces pour un bloc.`;
+  if (/NameError/i.test(error)) return `Un nom est inconnu${suffix}. Vérifie l’orthographe de la variable ou de la fonction.`;
+  if (/TypeError/i.test(error)) return `Cette opération utilise des types incompatibles${suffix}. Vérifie les valeurs manipulées.`;
+  if (/ValueError/i.test(error)) return `La valeur fournie n’a pas le format attendu${suffix}.`;
+  if (/ZeroDivisionError/i.test(error)) return `Une division par zéro est apparue${suffix}.`;
+  if (/EOFError/i.test(error)) return `Le programme demande une entrée supplémentaire${suffix}. Ajoute une valeur dans « Entrées clavier ».`;
+  if (/ImportError|ModuleNotFoundError/i.test(error)) return `Cette bibliothèque n’est pas disponible dans ce défi${suffix}.`;
+  return `${error}${suffix}`;
+}
+
 function describeVisibleTest(test: LevelTest) {
   if (test.kind === "stdout") {
     const inputs = test.inputs?.length
@@ -95,6 +110,7 @@ export function CodeWorkspace({
   const editorRef = useRef<HTMLTextAreaElement>(null);
   const highlightRef = useRef<HTMLPreElement>(null);
   const highlightedCode = useMemo(() => highlightPython(code), [code]);
+  const lineCount = Math.max(1, code.split("\n").length);
   const busy = runtimeState === "loading" || runtimeState === "running";
   const statusIsError = runtimeState === "error" || runResult?.status === "error" || runResult?.status === "timeout";
 
@@ -172,6 +188,9 @@ export function CodeWorkspace({
         </div>
         <label className="wg-sr-only" htmlFor={`code-${levelId}`}>Votre code Python</label>
         <div className="wg-editor-surface">
+          <div className="wg-line-numbers" aria-hidden="true">
+            {Array.from({ length: lineCount }, (_, index) => <span key={index}>{index + 1}</span>)}
+          </div>
           <pre className="wg-editor-highlight" aria-hidden="true" ref={highlightRef}>
             <code>
               {highlightedCode.map((part, index) =>
@@ -236,7 +255,7 @@ export function CodeWorkspace({
         {runResult?.status === "timeout"
           ? "Le programme a dépassé le temps autorisé."
           : runResult?.error || (runtimeState === "error" && runtimeMessage)
-            ? runResult?.error || runtimeMessage
+            ? translatePythonError(runResult?.error || runtimeMessage)
             : runtimeCopy[runtimeState]}
         {runResult && <span> · {runResult.durationMs} ms</span>}
       </div>
@@ -255,7 +274,7 @@ export function CodeWorkspace({
               {validationResult.hiddenTotal > 0 && ` · ${validationResult.hiddenPassed}/${validationResult.hiddenTotal} vérifications`}
             </span>
           </div>
-          {validationResult.error && <p className="wg-fail">{validationResult.error}</p>}
+          {validationResult.error && <p className="wg-fail">{translatePythonError(validationResult.error)}</p>}
           <div className="wg-result-list">
             {validationResult.visible.map((test, index) => (
               <div className="wg-result-row" key={`${levelId}-case-${index}`} data-testid={`result-case-${levelId}-${index}`}>

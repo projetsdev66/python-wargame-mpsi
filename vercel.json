@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm --filter @workspace/python-wargame build",
+  "outputDirectory": "artifacts/python-wargame/dist/public",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "rewrites": [{ "source": "/niveau/:id", "destination": "/" }]
+}

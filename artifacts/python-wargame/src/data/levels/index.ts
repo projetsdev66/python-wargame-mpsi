@@ -11,6 +11,7 @@ import level10 from "./10-chaines";
 import level11 from "./11-dictionnaires";
 import level12 from "./12-tuples";
 import level13 from "./13-defi-synthese";
+import advancedLevels from "./14-a-20-algorithmique";
 import type { LearningLevel } from "@/domain/types";
 
 export const LEVELS: LearningLevel[] = [
@@ -27,6 +28,7 @@ export const LEVELS: LearningLevel[] = [
   level11,
   level12,
   level13,
+  ...advancedLevels,
 ];
 
 export { type LearningLevel } from "@/domain/types";

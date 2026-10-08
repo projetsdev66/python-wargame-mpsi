@@ -11,17 +11,17 @@ export const PHASES: PlannedPhase[] = [
     id: "algorithmique",
     title: "Algorithmique",
     description: "Parcours, recherches, tris, récursivité et structures de données.",
-    status: "planned",
+    status: "available",
     sourceNote:
-      "La complexité, les piles et les files ne sont pas développées dans le PDF fourni.",
+      "Les chaînes, ensembles, compréhensions, tris et récursivité s’appuient sur le PDF ; la complexité et la recherche dichotomique sont des compléments MPSI.",
   },
   {
     id: "calcul-scientifique",
     title: "Calcul scientifique",
     description: "NumPy, Matplotlib et calcul numérique.",
-    status: "planned",
+    status: "available",
     sourceNote:
-      "Le PDF couvre NumPy et Matplotlib ; intégration numérique, Newton et Euler nécessitent un support MPSI complémentaire.",
+      "Le PDF couvre NumPy et Matplotlib ; l’approximation d’intégrale par rectangles est ajoutée comme complément MPSI.",
   },
   {
     id: "ds-tp",
