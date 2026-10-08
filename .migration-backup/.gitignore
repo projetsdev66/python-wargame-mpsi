@@ -11,6 +11,15 @@ out-tsc
 # dependencies
 node_modules
 
+# Secrets, local Replit state, and uploaded source material
+.env
+.env.*
+!.env.example
+.vercel/
+.local/
+.conversation/
+attached_assets/
+
 # IDEs and editors
 /.idea
 .project
@@ -46,4 +55,3 @@ Thumbs.db
 
 # Replit
 .cache/
-.local/
