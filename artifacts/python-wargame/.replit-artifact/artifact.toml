@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "PyWargame MPSI"
+description = "Un parcours de pratique Python en français pour les élèves de MPSI, avec défis progressifs, exécution dans le navigateur et progression sauvegardée localement."
+version = "1.0.0"
+id = "artifacts/python-wargame"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19801
+
+[services.development]
+run = "pnpm --filter @workspace/python-wargame run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/python-wargame", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/python-wargame/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19801"
+BASE_PATH = "/"
