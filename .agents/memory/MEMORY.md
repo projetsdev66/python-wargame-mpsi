@@ -1,0 +1,1 @@
+- [GitHub source-control authentication](github-auth.md) — if Git operations reject auth despite an active integration, use Replit's Git Providers reconnect flow before retrying.
